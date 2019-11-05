@@ -24,11 +24,14 @@ GameState gameState = GameState::SplashScreen;
  */
 void setup() {
 
-  arduboy.boot();
-  arduboy.flashlight();
+  arduboy.boot(); 
+  arduboy.display(); 
+  arduboy.flashlight(); 
 
-  arduboy.initRandomSeed();
+  arduboy.systemButtons();
   arduboy.audio.on();
+  arduboy.initRandomSeed();
+  arduboy.waitNoButtons(); 
 
   resetAll();
 

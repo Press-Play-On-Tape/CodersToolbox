@@ -32,6 +32,8 @@ void artScreen_Render() {
   arduboy.fillRect(102, 26, 31, 7, WHITE);
   arduboy.drawFastVLine(100, 0, HEIGHT, WHITE);
 
+  Sprites::drawSelfMasked(107, 16, Images::PressBArrow, 0);
+
   font3x5.setCursor(102, 26);
   font3x5.setTextColor(BLACK);
   font3x5.print("Image ");
