@@ -1,0 +1,6 @@
+{
+    "board": "arduino:avr:leonardo",
+    "port": "/dev/cu.usbmodem14601",
+    "sketch": "Toolbox.ino",
+    "output": "../build"
+}
