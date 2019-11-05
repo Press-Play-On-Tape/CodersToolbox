@@ -29,6 +29,13 @@ void artScreen_Render() {
   font3x5.print(":Y~");
   font3x5.print(imageVars.y);
 
+  arduboy.fillRect(102, 26, 31, 7, WHITE);
+  arduboy.drawFastVLine(100, 0, HEIGHT, WHITE);
+
+  font3x5.setCursor(102, 26);
+  font3x5.setTextColor(BLACK);
+  font3x5.print("Image ");
+  font3x5.print(imageVars.imageIdx + 1);
 
   Sprites::drawSelfMasked(3, 36, Images::Preview, 0);
 
@@ -44,7 +51,7 @@ void artScreen_Render() {
 
     for (uint8_t x = 0 ; x < imageVars.xDim; x++) {
       
-      uint8_t z = imageVars.image[y / 8][x];
+      uint8_t z = imageVars.image[imageVars.imageIdx][y / 8][x];
 
       if (z & (1 << (y % 8))) {
 
@@ -86,17 +93,17 @@ void artScreen_Render() {
 
   if (imageVars.menuCounter == MENU_DELAY) {
 
-    arduboy.fillRect(53, 0, WIDTH - 53, HEIGHT, BLACK);
-    arduboy.fillRect(54, 0, WIDTH - 54, 8, WHITE);
-    arduboy.drawRect(54, 0, WIDTH - 54, HEIGHT, WHITE);
+    arduboy.fillRect(52, 0, WIDTH - 53, HEIGHT, BLACK);
+    arduboy.fillRect(53, 0, WIDTH - 54, 8, WHITE);
+    arduboy.drawRect(53, 0, WIDTH - 54, HEIGHT, WHITE);
 
     Sprites::drawErase(117, 2, Images::Arrow_Left, 0);
     Sprites::drawErase(121, 2, Images::Arrow_Right, 0);
     
-    font3x5.setCursor(56, 1);
+    font3x5.setCursor(55, 1);
     font3x5.setTextColor(BLACK);
     font3x5.print(F("TOOLBOX"));
-    font3x5.setCursor(60, 11);
+    font3x5.setCursor(59, 11);
     font3x5.setTextColor(WHITE);
 
     switch (menu.image.page) {
@@ -116,11 +123,12 @@ void artScreen_Render() {
           font3x5.print(F("\n\n"));
         }
 
-        font3x5.setCursor(60, 39);
+        font3x5.setCursor(59, 39);
         font3x5.print(F("Clear Image\n")); 
+        font3x5.print(F("Clear All Images\n")); 
         font3x5.print(F("Invert Image\n"));
 
-        arduboy.drawFastVLine(57, pgm_read_byte(&yPos_2[menu.image.firstIndex]), 5);
+        arduboy.drawFastVLine(56, pgm_read_byte(&yPos_2[menu.image.firstIndex]), 5);
         break;
 
       case 1:
@@ -128,11 +136,11 @@ void artScreen_Render() {
         font3x5.print(F("Size X: "));
         
         if (menu.image.mode == MenuMode::XDim) {
-          Sprites::drawOverwrite(87, 12, Images::Arrow_Left, 0);
-          Sprites::drawOverwrite(114, 12, Images::Arrow_Right, 0);
-          arduboy.fillRect(92, 11, 20, 7, WHITE);
+          Sprites::drawOverwrite(86, 12, Images::Arrow_Left, 0);
+          Sprites::drawOverwrite(113, 12, Images::Arrow_Right, 0);
+          arduboy.fillRect(91, 11, 20, 7, WHITE);
   
-          font3x5.setCursor(96, 11);
+          font3x5.setCursor(95, 11);
           font3x5.setTextColor(BLACK);
           font3x5.print(imageVars.xDim);
         }
@@ -142,15 +150,15 @@ void artScreen_Render() {
         }
 
         font3x5.setTextColor(WHITE);
-        font3x5.setCursor(60, 19);
+        font3x5.setCursor(59, 19);
         font3x5.print(F("Size Y: "));
         
         if (menu.image.mode == MenuMode::YDim) {
-          Sprites::drawOverwrite(87, 20, Images::Arrow_Left, 0);
-          Sprites::drawOverwrite(114, 20, Images::Arrow_Right, 0);
-          arduboy.fillRect(92, 19, 20, 7, WHITE);
+          Sprites::drawOverwrite(86, 20, Images::Arrow_Left, 0);
+          Sprites::drawOverwrite(113, 20, Images::Arrow_Right, 0);
+          arduboy.fillRect(91, 19, 20, 7, WHITE);
   
-          font3x5.setCursor(96, 19);
+          font3x5.setCursor(95, 19);
           font3x5.setTextColor(BLACK);
           font3x5.print(imageVars.yDim);
         }
@@ -160,10 +168,23 @@ void artScreen_Render() {
         }
 
         font3x5.setTextColor(WHITE);
-        font3x5.setCursor(60, 31);
+        font3x5.setCursor(59, 31);
         font3x5.print(F("Export to Serial\nReturn to Menu"));
 
-        arduboy.drawFastVLine(57, pgm_read_byte(&yPos[menu.image.secondIndex]), 5);
+        arduboy.drawFastVLine(56, pgm_read_byte(&yPos[menu.image.secondIndex]), 5);
+        break;
+
+      case 2:
+        font3x5.setCursor(57, 11);
+        font3x5.print(F("A        Toggle pixel\n"));
+        font3x5.print(F("A+      Toggle + move\n"));
+        font3x5.print(F("A+      Toggle + move\n"));
+        font3x5.print(F("B+      Image up\n"));
+        font3x5.print(F("B+      Image down\n"));
+        SpritesB::drawSelfMasked(67, 19, Images::Arrows_UpDown, 0);
+        SpritesB::drawSelfMasked(66, 28, Images::Arrows_LeftRight, 0);
+        SpritesB::drawSelfMasked(67, 35, Images::Arrows_UpDown, 0);
+        SpritesB::drawSelfMasked(66, 44, Images::Arrows_LeftRight, 0);
         break;
 
     }

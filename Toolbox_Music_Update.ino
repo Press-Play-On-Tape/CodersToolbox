@@ -89,15 +89,6 @@ void composer_Update() {
     if (arduboy.justPressed(B_BUTTON)) {
 
       musicVars.menuCounter = 1;
-      // Serial.println("1 _________________ ");
-      // for (uint16_t x = 0; x < NUMBER_OF_NOTES; x++)
-      // {
-      //   Serial.print(musicVars.notes[x].freq);
-      //   Serial.print(",");
-      //   Serial.print(musicVars.notes[x].duration);
-      //   Serial.print(" ");
-      // }
-      // Serial.println(" ");
 
     }
     else if (arduboy.pressed(B_BUTTON)) {

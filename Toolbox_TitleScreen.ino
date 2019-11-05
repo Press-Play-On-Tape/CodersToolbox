@@ -11,8 +11,6 @@ uint8_t title_right_arrow = 0;
 //
 void titleScreen_Update() { 
 
-	auto justPressed = arduboy.justPressedButtons();
-
   if (title_left_arrow > 0)   title_left_arrow--;
   if (title_right_arrow > 0)  title_right_arrow--;
 

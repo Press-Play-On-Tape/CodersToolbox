@@ -13,73 +13,95 @@ void artScreen_Update() {
 
     if (arduboy.justPressed(A_BUTTON)) {
 
-      if ((imageVars.image[imageVars.y / 8][imageVars.x] & (1 << (imageVars.y % 8))) > 0) {
+      if ((imageVars.image[imageVars.imageIdx][imageVars.y / 8][imageVars.x] & (1 << (imageVars.y % 8))) > 0) {
 
-        imageVars.image[imageVars.y / 8][imageVars.x] = imageVars.image[imageVars.y / 8][imageVars.x] & ~(1 << (imageVars.y % 8));
+        imageVars.image[imageVars.imageIdx][imageVars.y / 8][imageVars.x] = imageVars.image[imageVars.imageIdx][imageVars.y / 8][imageVars.x] & ~(1 << (imageVars.y % 8));
         maskAction = 0;
 
       }
       else {
 
-        imageVars.image[imageVars.y / 8][imageVars.x] = imageVars.image[imageVars.y / 8][imageVars.x] | (1 << (imageVars.y % 8));
+        imageVars.image[imageVars.imageIdx][imageVars.y / 8][imageVars.x] = imageVars.image[imageVars.imageIdx][imageVars.y / 8][imageVars.x] | (1 << (imageVars.y % 8));
         maskAction = 1;
 
       }
 
     }
 
-    if (arduboy.pressed(A_BUTTON)) {
+    if (arduboy.notPressed(B_BUTTON)) {
 
-      if (arduboy.justPressed(UP_BUTTON) && imageVars.y > 0) {
-        imageVars.y--;
-        artScreen_Update_Toggle(maskAction);
+      if (arduboy.pressed(A_BUTTON)) {
+
+        if (arduboy.justPressed(UP_BUTTON) && imageVars.y > 0) {
+          imageVars.y--;
+          artScreen_Update_Toggle(maskAction);
+        }
+
+        if (arduboy.justPressed(DOWN_BUTTON) && imageVars.y < imageVars.yDim - 1) {
+          imageVars.y++;
+          artScreen_Update_Toggle(maskAction);
+        }
+
+        if (arduboy.justPressed(LEFT_BUTTON) && imageVars.x > 0) {
+          imageVars.x--;
+          artScreen_Update_Toggle(maskAction);
+        }
+
+        if (arduboy.justPressed(RIGHT_BUTTON) && imageVars.x < imageVars.xDim - 1) {
+          imageVars.x++;
+          artScreen_Update_Toggle(maskAction);
+        }
+
       }
+      else {
+                
+        if (arduboy.justPressed(UP_BUTTON) && imageVars.y > 0) {
+          imageVars.y--;
+        }
 
-      if (arduboy.justPressed(DOWN_BUTTON) && imageVars.y < imageVars.yDim - 1) {
-        imageVars.y++;
-        artScreen_Update_Toggle(maskAction);
-      }
+        if (arduboy.justPressed(DOWN_BUTTON) && imageVars.y < imageVars.yDim - 1) {
+          imageVars.y++;
+        }
 
-      if (arduboy.justPressed(LEFT_BUTTON) && imageVars.x > 0) {
-        imageVars.x--;
-        artScreen_Update_Toggle(maskAction);
-      }
+        if (arduboy.justPressed(LEFT_BUTTON) && imageVars.x > 0) {
+          imageVars.x--;
+        }
 
-      if (arduboy.justPressed(RIGHT_BUTTON) && imageVars.x < imageVars.xDim - 1) {
-        imageVars.x++;
-        artScreen_Update_Toggle(maskAction);
-      }
+        if (arduboy.justPressed(RIGHT_BUTTON) && imageVars.x < imageVars.xDim - 1) {
+          imageVars.x++;
+        }
 
-    }
-    else {
-              
-      if (arduboy.justPressed(UP_BUTTON) && imageVars.y > 0) {
-        imageVars.y--;
-      }
-
-      if (arduboy.justPressed(DOWN_BUTTON) && imageVars.y < imageVars.yDim - 1) {
-        imageVars.y++;
-      }
-
-      if (arduboy.justPressed(LEFT_BUTTON) && imageVars.x > 0) {
-        imageVars.x--;
-      }
-
-      if (arduboy.justPressed(RIGHT_BUTTON) && imageVars.x < imageVars.xDim - 1) {
-        imageVars.x++;
       }
 
     }
 
     // -----------------------------------------------------------------------------------
-    //  B  Pressed Together
+    //  B  Pressed 
 
     if (arduboy.justPressed(B_BUTTON)) {
       imageVars.menuCounter = 1;
     }
 
-    if (imageVars.menuCounter < MENU_DELAY && arduboy.pressed(B_BUTTON)) {
-      imageVars.menuCounter++;
+    if (arduboy.pressed(B_BUTTON) && imageVars.menuCounter < MENU_DELAY) {
+      
+      if (arduboy.justPressed(UP_BUTTON)) {
+        imageVars.menuCounter = 0;
+        if (imageVars.imageIdx > 0) {
+          imageVars.imageIdx--;
+        }
+      }
+      
+      else if (arduboy.justPressed(DOWN_BUTTON)) {
+        imageVars.menuCounter = 0;
+        if (imageVars.imageIdx < 7) {
+          imageVars.imageIdx++;
+        }
+      }
+
+      else {
+        imageVars.menuCounter++;
+      }
+
     }
 
     if (arduboy.notPressed(B_BUTTON)) {
@@ -95,7 +117,7 @@ void artScreen_Update() {
 
         if (arduboy.justPressed(LEFT_BUTTON)) {
 
-          menu.image.page = 1;
+          menu.image.page = 2;
           
         }
 
@@ -126,7 +148,7 @@ void artScreen_Update() {
 
         }
 
-        if (arduboy.justPressed(DOWN_BUTTON) && menu.image.firstIndex < 4) {
+        if (arduboy.justPressed(DOWN_BUTTON) && menu.image.firstIndex < 5) {
 
           if (menu.image.firstIndex == 0) {
 
@@ -177,15 +199,25 @@ void artScreen_Update() {
             case 3:
               for (uint8_t y = 0; y < 2; y++) {
                 for (uint8_t x = 0 ; x < 16; x++) {
-                  imageVars.image[y][x] = 0;
+                  imageVars.image[imageVars.imageIdx][y][x] = 0;
                 }
               }
               break;
 
             case 4:
+              for (uint8_t z = 0; z < 8; z++) {
+                for (uint8_t y = 0; y < 2; y++) {
+                  for (uint8_t x = 0 ; x < 16; x++) {
+                    imageVars.image[z][y][x] = 0;
+                  }
+                }
+              }
+              break;
+
+            case 5:
               for (uint8_t y = 0; y < 2; y++) {
                 for (uint8_t x = 0 ; x < 16; x++) {
-                  imageVars.image[y][x] = ~imageVars.image[y][x];
+                  imageVars.image[imageVars.imageIdx][y][x] = ~imageVars.image[imageVars.imageIdx][y][x];
                 }
               }
               break;
@@ -206,7 +238,7 @@ void artScreen_Update() {
 
         if (arduboy.justPressed(RIGHT_BUTTON) && menu.image.mode == MenuMode::Nothing) {
 
-          menu.image.page = 0;
+          menu.image.page = 2;
           
         }
 
@@ -311,6 +343,22 @@ void artScreen_Update() {
 
         break; 
     
+
+      case 2:
+
+        if (arduboy.justPressed(LEFT_BUTTON)) {
+
+          menu.image.page = 1;
+          
+        }
+
+        if (arduboy.justPressed(RIGHT_BUTTON)) {
+
+          menu.image.page = 0;
+          
+        }
+        break; 
+
     }
 
   }
@@ -320,10 +368,10 @@ void artScreen_Update() {
 void artScreen_Update_Toggle(uint8_t maskAction) {
 
   if (maskAction == 0) {
-    imageVars.image[imageVars.y / 8][imageVars.x] = imageVars.image[imageVars.y / 8][imageVars.x] & ~(1 << (imageVars.y % 8));
+    imageVars.image[imageVars.imageIdx][imageVars.y / 8][imageVars.x] = imageVars.image[imageVars.imageIdx][imageVars.y / 8][imageVars.x] & ~(1 << (imageVars.y % 8));
   }
   else {
-    imageVars.image[imageVars.y / 8][imageVars.x] = imageVars.image[imageVars.y / 8][imageVars.x] | (1 << (imageVars.y % 8));
+    imageVars.image[imageVars.imageIdx][imageVars.y / 8][imageVars.x] = imageVars.image[imageVars.imageIdx][imageVars.y / 8][imageVars.x] | (1 << (imageVars.y % 8));
   }
 
 }

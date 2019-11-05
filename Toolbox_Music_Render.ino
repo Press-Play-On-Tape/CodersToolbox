@@ -17,7 +17,7 @@ void composer_Render() {
 
   int16_t xPos = 78;
 
-  for (uint16_t i = musicVars.x; i < musicVars.x + 12; i++) {
+  for (uint8_t i = musicVars.x; i < static_cast<uint8_t>(musicVars.x + 12); i++) {
 
     Note note = musicVars.notes[i];
 
@@ -159,7 +159,7 @@ void composer_Render() {
         font3x5.print(F("Save to EEPROM\n"));
 
         uint8_t c;
-        EEPROM.get(50, c);
+        EEPROM.get(MUSIC_EEPROM, c);
 
         if (c == 'c') { 
           font3x5.print(F("Load from EEPROM\n")); 

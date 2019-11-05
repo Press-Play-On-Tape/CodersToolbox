@@ -165,7 +165,7 @@ void resetAll() {
     for (uint8_t y = 0; y < 2; y++) {
 
       for (uint8_t x = 0; x < 16; x++) {
-        imageVars.image[y][x]= 0;
+        imageVars.image[imageVars.imageIdx][y][x]= 0;
       }
 
     }
@@ -230,43 +230,65 @@ void exportToSerial() {
 
     case GameState::Designer:
       {
-      const uint8_t masks[] = {0, 1, 3, 7, 15, 31, 63, 127 };
-      uint8_t yMax = (imageVars.yDim % 8 == 0 ? imageVars.yDim / 8 : (imageVars.yDim / 8) + 1);
+        const uint8_t masks[] = {0, 1, 3, 7, 15, 31, 63, 127 };
+        uint8_t yMax = (imageVars.yDim % 8 == 0 ? imageVars.yDim / 8 : (imageVars.yDim / 8) + 1);
+        uint8_t yMax_Mask = (imageVars.yDim % 8 == 0 ? 255 : masks[imageVars.yDim % 8]);
 
-Serial.print(imageVars.yDim % 8);
-Serial.print(" ");
-Serial.println(masks[imageVars.yDim % 8]);
+        for (uint8_t z = 0; z < 8; z++) {
 
-      uint8_t yMax_Mask = (imageVars.yDim % 8 == 0 ? 255 : masks[imageVars.yDim % 8]);
+          if (z == 0 || !imageEmpty(z, yMax)) {
 
-      Serial.println(F("const uint8_t picture[] PROGMEM = {"));
+            Serial.print(F("const uint8_t picture"));
+            Serial.print(z + 1);
+            Serial.println(F("[] PROGMEM = {"));
 
-      for (uint8_t y = 0; y < yMax; y++) {
+            for (uint8_t y = 0; y < yMax; y++) {
 
-        for (uint8_t x = 0; x < imageVars.xDim; x++) {
+              for (uint8_t x = 0; x < imageVars.xDim; x++) {
 
-          if (y < yMax - 1) {
-            printHex(imageVars.image[y][x]);
+                if (y < yMax - 1) {
+                  printHex(imageVars.image[imageVars.imageIdx][y][x]);
+                }
+                else {
+                  printHex(static_cast<uint8_t>(imageVars.image[imageVars.imageIdx][y][x] & yMax_Mask));
+                }
+                Serial.print(F(","));
+
+              }
+
+              if (y < (imageVars.yDim / 2) - 1) Serial.println(F("")); 
+            }
+              
+            Serial.println(F(" };\n"));
+
           }
-          else {
-            printHex(static_cast<uint8_t>(imageVars.image[y][x] & yMax_Mask));
-          }
-          Serial.print(F(","));
 
         }
 
-        if (y < (imageVars.yDim / 2) - 1) Serial.println(F("")); 
-      }
-        
-      Serial.println(F(" };"));
-
       }
       break;
+
+    default: break;
 
   }
 
 }
 
+bool imageEmpty(uint8_t idx, uint8_t yMax) {
+
+  for (uint8_t y = 0; y < yMax; y++) {
+
+    for (uint8_t x = 0; x < imageVars.xDim; x++) {
+
+      if (imageVars.image[idx][y][x] != 0) return false;
+
+    }
+
+  }
+
+  return true;
+  
+}
 
 // -----------------------------------------------------------------------------
 //  Increase the tempo ..

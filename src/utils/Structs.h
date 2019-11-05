@@ -10,10 +10,10 @@ struct Note {
   uint8_t getDurationIndex(uint16_t noteLength) { return (duration / noteLength) - 1; }
 };
 
-union overlayData {
-  Note notes[NUMBER_OF_NOTES] = {};
-  uint8_t image[2][16];
-};
+// union overlayData {
+//   Note notes[NUMBER_OF_NOTES] = {};
+//   uint8_t image[8][2][16];
+// };
 
 enum GameState : uint8_t {
   SplashScreen,
@@ -43,12 +43,13 @@ struct MusicVars {
 
 struct ImageVars {
   uint8_t hasBeenSaved;
-  uint8_t image[2][16];
+  uint8_t image[8][2][16];
   uint8_t x = 0;
   uint16_t y = 0;
   uint8_t xDim = 16;
   uint8_t yDim = 16;
   uint8_t menuCounter = 0;
+  uint8_t imageIdx = 0;
 };
 
 struct Menu {
