@@ -215,9 +215,9 @@ void exportToSerial() {
         if (note.freq == TONES_END) break;
         if (note.freq > 0x8000) note.freq = 0;
 
-        Serial.print(note.freq);
+        printHex(note.freq);
         Serial.print(F(","));
-        Serial.print(note.duration);
+        printHex(note.duration);
         Serial.print(F(", "));
 
         if (x > 0 && x % 8 == 0) Serial.println(F("")); 
@@ -246,10 +246,10 @@ Serial.println(masks[imageVars.yDim % 8]);
         for (uint8_t x = 0; x < imageVars.xDim; x++) {
 
           if (y < yMax - 1) {
-            Serial.print(imageVars.image[y][x]);
+            printHex(imageVars.image[y][x]);
           }
           else {
-            Serial.print(imageVars.image[y][x] & yMax_Mask);
+            printHex(static_cast<uint8_t>(imageVars.image[y][x] & yMax_Mask));
           }
           Serial.print(F(","));
 
@@ -305,5 +305,31 @@ uint16_t getTempo_Below(uint16_t tempo) {
   }
 
   return tempo;
+
+}
+
+
+// -----------------------------------------------------------------------------
+//  Print a value in HEX format ..
+
+void printHex(uint16_t value) {
+
+  Serial.print("0x");
+  if (value < 0x1000) Serial.print("0");
+  if (value < 0x0100) Serial.print("0");
+  if (value < 0x0010) Serial.print("0");
+  Serial.print(value, HEX);
+
+}
+
+
+// -----------------------------------------------------------------------------
+//  Print a value in HEX format ..
+
+void printHex(uint8_t value) {
+
+  Serial.print("0x");
+  if (value < 0x10) Serial.print("0");
+  Serial.print(value, HEX);
 
 }
