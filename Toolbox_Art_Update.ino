@@ -345,6 +345,10 @@ void artScreen_Update() {
     
 
       case 2:
+        
+        if (arduboy.justPressed(B_BUTTON)) {
+          imageVars.menuCounter = 0;
+        }
 
         if (arduboy.justPressed(LEFT_BUTTON)) {
 

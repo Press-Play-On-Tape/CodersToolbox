@@ -7,9 +7,9 @@
 //  Render the state .. 
 //
 
-#define xOffset 35
-#define previewXOffset 8
-#define previewYOffset 46
+// #define xOffset 35
+// #define previewXOffset 8
+// #define previewYOffset 46
 
 void artScreen_Render() {
 
@@ -44,25 +44,32 @@ void artScreen_Render() {
 
   // Render preview window ..
 
-  arduboy.drawRect(previewXOffset - 2, previewYOffset - 2, imageVars.xDim + 4, imageVars.yDim + 4, WHITE);
+  uint8_t previewXOffset = 8 + ((16 - imageVars.xDim) / 2);
+  uint8_t previewYOffset = 46 + ((16 - imageVars.yDim) / 2);
+  uint8_t xOffset = 35 + ((64 - (imageVars.xDim * 4)) / 2);
+  uint8_t yOffset = (64 - (imageVars.yDim * 4)) / 2;
 
+  arduboy.drawRect(previewXOffset - 2, previewYOffset - 2, imageVars.xDim + 4, imageVars.yDim + 4, WHITE);
 
   for (uint8_t y = 0; y < imageVars.yDim; y++) {
 
-    arduboy.drawPixel(xOffset - 1, (y * 4) + 3, WHITE);
+    arduboy.drawPixel(xOffset - 1, yOffset + (y * 4) + 3, WHITE);
 
     for (uint8_t x = 0 ; x < imageVars.xDim; x++) {
+
+      arduboy.drawPixel(xOffset + (x*4) - 1, yOffset - 1, WHITE);
+      arduboy.drawPixel(xOffset + (x*4) + 3, yOffset - 1, WHITE);
       
       uint8_t z = imageVars.image[imageVars.imageIdx][y / 8][x];
 
       if (z & (1 << (y % 8))) {
 
-        Sprites::drawSelfMasked(xOffset + (x*4), y * 4, Images::Block, 0);
+        Sprites::drawSelfMasked(xOffset + (x*4), yOffset + (y * 4), Images::Block, 0);
         arduboy.drawPixel(previewXOffset + x, previewYOffset + y, WHITE);
 
       }
 
-      arduboy.drawPixel(xOffset + (x*4) + 3, (y * 4) + 3, WHITE);
+      arduboy.drawPixel(xOffset + (x*4) + 3, yOffset + (y * 4) + 3, WHITE);
 
     }
 
@@ -82,10 +89,10 @@ void artScreen_Render() {
   */
 
   if (arduboy.getFrameCountHalf(64)) {
-    arduboy.drawRect(xOffset + (imageVars.x * 4) - 1, (imageVars.y * 4) - 1, 5, 5, WHITE);
+    arduboy.drawRect(xOffset + (imageVars.x * 4) - 1, yOffset + (imageVars.y * 4) - 1, 5, 5, WHITE);
   }
   else {
-    Sprites::drawSelfMasked(xOffset + (imageVars.x * 4) - 1, (imageVars.y * 4) - 1, Images::Block_Highlight, 0);
+    Sprites::drawSelfMasked(xOffset + (imageVars.x * 4) - 1, yOffset + (imageVars.y * 4) - 1, Images::Block_Highlight, 0);
   }
 
   Sprites::drawOverwrite(102, 51, Images::HoldB, 0);
@@ -95,9 +102,9 @@ void artScreen_Render() {
 
   if (imageVars.menuCounter == MENU_DELAY) {
 
-    arduboy.fillRect(52, 0, WIDTH - 53, HEIGHT, BLACK);
-    arduboy.fillRect(53, 0, WIDTH - 54, 8, WHITE);
-    arduboy.drawRect(53, 0, WIDTH - 54, HEIGHT, WHITE);
+    arduboy.fillRect(52, 0, WIDTH - 52, HEIGHT, BLACK);
+    arduboy.fillRect(53, 0, WIDTH - 53, 8, WHITE);
+    arduboy.drawRect(53, 0, WIDTH - 53, HEIGHT, WHITE);
 
     Sprites::drawErase(117, 2, Images::Arrow_Left, 0);
     Sprites::drawErase(121, 2, Images::Arrow_Right, 0);
