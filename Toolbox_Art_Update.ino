@@ -148,7 +148,7 @@ void artScreen_Update() {
 
         }
 
-        if (arduboy.justPressed(DOWN_BUTTON) && menu.image.firstIndex < 5) {
+        if (arduboy.justPressed(DOWN_BUTTON) && menu.image.firstIndex < 4) {
 
           if (menu.image.firstIndex == 0) {
 
@@ -197,31 +197,15 @@ void artScreen_Update() {
               break;
 
             case 3:
-              for (uint8_t y = 0; y < 2; y++) {
-                for (uint8_t x = 0 ; x < 16; x++) {
-                  imageVars.image[imageVars.imageIdx][y][x] = 0;
-                }
-              }
+              exportToSerial();
               break;
 
             case 4:
-              for (uint8_t z = 0; z < 8; z++) {
-                for (uint8_t y = 0; y < 2; y++) {
-                  for (uint8_t x = 0 ; x < 16; x++) {
-                    imageVars.image[z][y][x] = 0;
-                  }
-                }
-              }
-              break;
-
-            case 5:
-              for (uint8_t y = 0; y < 2; y++) {
-                for (uint8_t x = 0 ; x < 16; x++) {
-                  imageVars.image[imageVars.imageIdx][y][x] = ~imageVars.image[imageVars.imageIdx][y][x];
-                }
-              }
-              break;
-
+              menu.image.mode = MenuMode::Nothing;
+              menu.image.page = 0;
+              menu.image.secondIndex = 0;
+              imageVars.menuCounter = 0;
+              gameState = GameState::TitleScreen;
           }
 
         }
@@ -248,7 +232,7 @@ void artScreen_Update() {
 
         }
 
-        if (arduboy.justPressed(DOWN_BUTTON) && menu.image.secondIndex < 3 && menu.image.mode == MenuMode::Nothing) {
+        if (arduboy.justPressed(DOWN_BUTTON) && menu.image.secondIndex < 5 && menu.image.mode == MenuMode::Nothing) {
 
           menu.image.secondIndex++;
 
@@ -276,6 +260,14 @@ void artScreen_Update() {
               if (imageVars.y == imageVars.yDim) imageVars.y--;
               break;            
 
+            case 2:
+              if (imageVars.copy > 0) {
+
+                imageVars.copy--;
+
+              }
+              break;            
+
           }
                     
         }
@@ -300,6 +292,14 @@ void artScreen_Update() {
               }
               break;            
 
+            case 2:
+              if (imageVars.copy < 7) {
+
+                imageVars.copy++;
+
+              }
+              break;            
+
           }
                     
         }
@@ -310,25 +310,51 @@ void artScreen_Update() {
 
             switch (menu.image.secondIndex) {
 
-              case 0 ... 1:
+              case 0 ... 2:
+                imageVars.copy = imageVars.imageIdx < 7 ? imageVars.imageIdx + 1 : 0;
                 menu.image.mode = static_cast<MenuMode>(menu.image.secondIndex + 2);
                 break;
 
-              case 2:
-                exportToSerial();
+              case 3:
+                for (uint8_t y = 0; y < 2; y++) {
+                  for (uint8_t x = 0 ; x < 16; x++) {
+                    imageVars.image[imageVars.imageIdx][y][x] = 0;
+                  }
+                }
                 break;
 
-              case 3:
-                menu.image.mode = MenuMode::Nothing;
-                menu.image.page = 0;
-                menu.image.secondIndex = 0;
-                imageVars.menuCounter = 0;
-                gameState = GameState::TitleScreen;
+              case 4:
+                for (uint8_t z = 0; z < 8; z++) {
+                  for (uint8_t y = 0; y < 2; y++) {
+                    for (uint8_t x = 0 ; x < 16; x++) {
+                      imageVars.image[z][y][x] = 0;
+                    }
+                  }
+                }
+                break;
+
+              case 5:
+                for (uint8_t y = 0; y < 2; y++) {
+                  for (uint8_t x = 0 ; x < 16; x++) {
+                    imageVars.image[imageVars.imageIdx][y][x] = ~imageVars.image[imageVars.imageIdx][y][x];
+                  }
+                }
+                break;
 
             }
 
           }
           else {
+
+            if (menu.image.mode == MenuMode::Copy) {
+
+              for (uint8_t y = 0; y < 2; y++) {
+                for (uint8_t x = 0 ; x < 16; x++) {
+                  imageVars.image[imageVars.copy][y][x] = imageVars.image[imageVars.imageIdx][y][x];
+                }
+              }
+
+            }
 
             menu.image.mode = MenuMode::Nothing;
 

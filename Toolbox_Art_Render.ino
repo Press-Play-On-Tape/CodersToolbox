@@ -32,7 +32,7 @@ void artScreen_Render() {
   arduboy.fillRect(102, 26, 31, 7, WHITE);
   arduboy.drawFastVLine(100, 0, HEIGHT, WHITE);
 
-  Sprites::drawSelfMasked(107, 16, Images::PressBArrow, 0);
+  Sprites::drawSelfMasked(106, 16, Images::PressBArrow, 0);
 
   font3x5.setCursor(102, 26);
   font3x5.setTextColor(BLACK);
@@ -132,12 +132,11 @@ void artScreen_Render() {
           font3x5.print(F("\n\n"));
         }
 
+        font3x5.setTextColor(WHITE);
         font3x5.setCursor(59, 39);
-        font3x5.print(F("Clear Image\n")); 
-        font3x5.print(F("Clear All Images\n")); 
-        font3x5.print(F("Invert Image\n"));
+        font3x5.print(F("Export to Serial\nReturn to Menu"));
 
-        arduboy.drawFastVLine(56, pgm_read_byte(&yPos_2[menu.image.firstIndex]), 5);
+        arduboy.drawFastVLine(56, pgm_read_byte(&yPos_21[menu.image.firstIndex]), 5);
         break;
 
       case 1:
@@ -176,11 +175,24 @@ void artScreen_Render() {
           font3x5.print(F(" px"));
         }
 
+
         font3x5.setTextColor(WHITE);
         font3x5.setCursor(59, 31);
-        font3x5.print(F("Export to Serial\nReturn to Menu"));
+        font3x5.print(F("Copy Image\nClear Image\nClear All Images\nInvert Image\n"));
+        
+        if (menu.image.mode == MenuMode::Copy) {
+          font3x5.setCursor(99, 31);
+          font3x5.print(F("to"));
+          Sprites::drawOverwrite(109, 32, Images::Arrow_Left, 0);
+          Sprites::drawOverwrite(123, 32, Images::Arrow_Right, 0);
+          arduboy.fillRect(114, 31, 7, 7, WHITE);
+  
+          font3x5.setCursor(116, 31);
+          font3x5.setTextColor(BLACK);
+          font3x5.print(imageVars.copy + 1);
+        }
 
-        arduboy.drawFastVLine(56, pgm_read_byte(&yPos[menu.image.secondIndex]), 5);
+        arduboy.drawFastVLine(56, pgm_read_byte(&yPos_22[menu.image.secondIndex]), 5);
         break;
 
       case 2:

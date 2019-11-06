@@ -169,7 +169,7 @@ void composer_Render() {
           font3x5.print(F("\n\n"));
         }
 
-        arduboy.drawFastVLine(55, pgm_read_byte(&yPos[menu.music.firstIndex]), 5);
+        arduboy.drawFastVLine(55, pgm_read_byte(&yPos_11[menu.music.firstIndex]), 5);
         break;
 
       case 1:
@@ -210,9 +210,11 @@ void composer_Render() {
         }
 
         font3x5.setCursor(58, 31);
-        font3x5.print(F("Clear Tune\nExport to Serial\nReturn to Menu"));
+        font3x5.print(F("Clear Tune\nExport to Serial"));
+        font3x5.setCursor(58, 51);
+        font3x5.print(F("Return to Menu"));
 
-        arduboy.drawFastVLine(55, pgm_read_byte(&yPos[menu.music.secondIndex]), 5);
+        arduboy.drawFastVLine(55, pgm_read_byte(&yPos_12[menu.music.secondIndex]), 5);
         break;
 
       case 2:

@@ -9,8 +9,10 @@
 #define NOTE_SAMPLE_DURATION 75
 
 const uint16_t PROGMEM tempos[] = { 250, 200, 175, 150, 125, 100, 75, 50 };
-const uint8_t PROGMEM yPos[] = { 12, 20, 32, 40, 48 };
-const uint8_t PROGMEM yPos_2[] = { 12, 20, 28, 40, 48, 56 };
+const uint8_t PROGMEM yPos_11[] = { 12, 20, 32, 40, 48 };
+const uint8_t PROGMEM yPos_12[] = { 12, 20, 32, 40, 52 };
+const uint8_t PROGMEM yPos_21[] = { 12, 20, 28, 40, 48, 56 };
+const uint8_t PROGMEM yPos_22[] = { 12, 20, 32, 40, 48, 56 };
 
 const uint16_t PROGMEM noteSeq[8][15] = {
 
