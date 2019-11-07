@@ -29,7 +29,7 @@ void setup() {
   arduboy.flashlight(); 
 
   arduboy.systemButtons();
-  arduboy.audio.on();
+  arduboy.audio.begin();
   arduboy.initRandomSeed();
   arduboy.waitNoButtons(); 
 
