@@ -351,8 +351,9 @@ void composer_Update() {
 
                   for (uint8_t x = 0; x < NUMBER_OF_NOTES; x++) {
 
-                    if (musicVars.notes[x].freq != TONES_END && musicVars.notes[x].freq != NOTE_REST) {
-                      musicVars.notes[x].freq = pgm_read_word( &noteSeq[range - 1][getNoteIndex(range, musicVars.notes[x].freq)] );
+                    if (musicVars.notes[x].freq != TONES_END) {
+                      uint16_t pause = musicVars.notes[x].freq & 0x8000;
+                      musicVars.notes[x].freq = pgm_read_word( &noteSeq[range - 1][getNoteIndex(range, musicVars.notes[x].freq)] ) | pause;
                       musicVars.y = getFreq(musicVars.x);
                     }
 
@@ -401,8 +402,9 @@ void composer_Update() {
 
                   for (uint8_t x = 0; x < NUMBER_OF_NOTES; x++) {
 
-                    if (musicVars.notes[x].freq != TONES_END && musicVars.notes[x].freq != NOTE_REST) {
-                      musicVars.notes[x].freq = pgm_read_word(&noteSeq[range + 1][getNoteIndex(range, musicVars.notes[x].freq)]);
+                    if (musicVars.notes[x].freq != TONES_END) {
+                      uint16_t pause = musicVars.notes[x].freq & 0x8000;
+                      musicVars.notes[x].freq = pgm_read_word(&noteSeq[range + 1][getNoteIndex(range, musicVars.notes[x].freq)]) | pause;
                       musicVars.y = getFreq(musicVars.x);
                     }
 
