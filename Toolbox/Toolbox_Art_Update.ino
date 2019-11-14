@@ -37,7 +37,7 @@ void artScreen_Update() {
           artScreen_Update_Toggle(maskAction);
         }
 
-        if (arduboy.justPressed(DOWN_BUTTON) && imageVars.y < imageVars.yDim - 1) {
+        if (arduboy.justPressed(DOWN_BUTTON) && (imageVars.y < imageVars.yDim - 1)) {
           imageVars.y++;
           artScreen_Update_Toggle(maskAction);
         }
@@ -47,7 +47,7 @@ void artScreen_Update() {
           artScreen_Update_Toggle(maskAction);
         }
 
-        if (arduboy.justPressed(RIGHT_BUTTON) && imageVars.x < imageVars.xDim - 1) {
+        if (arduboy.justPressed(RIGHT_BUTTON) && (imageVars.x < imageVars.xDim - 1)) {
           imageVars.x++;
           artScreen_Update_Toggle(maskAction);
         }
@@ -59,7 +59,7 @@ void artScreen_Update() {
           imageVars.y--;
         }
 
-        if (arduboy.justPressed(DOWN_BUTTON) && imageVars.y < imageVars.yDim - 1) {
+        if (arduboy.justPressed(DOWN_BUTTON) && (imageVars.y < imageVars.yDim - 1)) {
           imageVars.y++;
         }
 
@@ -67,7 +67,7 @@ void artScreen_Update() {
           imageVars.x--;
         }
 
-        if (arduboy.justPressed(RIGHT_BUTTON) && imageVars.x < imageVars.xDim - 1) {
+        if (arduboy.justPressed(RIGHT_BUTTON) && (imageVars.x < imageVars.xDim - 1)) {
           imageVars.x++;
         }
 
@@ -148,7 +148,7 @@ void artScreen_Update() {
 
         }
 
-        if (arduboy.justPressed(DOWN_BUTTON) && menu.image.firstIndex < 4) {
+        if (arduboy.justPressed(DOWN_BUTTON) && menu.image.firstIndex < 5) {
 
           if (menu.image.firstIndex == 0) {
 
@@ -201,6 +201,10 @@ void artScreen_Update() {
               break;
 
             case 4:
+              loadFromSerial();
+              break;
+
+            case 5:
               menu.image.mode = MenuMode::Nothing;
               menu.image.page = 0;
               menu.image.secondIndex = 0;

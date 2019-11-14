@@ -134,7 +134,7 @@ void artScreen_Render() {
 
         font3x5.setTextColor(WHITE);
         font3x5.setCursor(59, 39);
-        font3x5.print(F("Export to Serial\nReturn to Menu"));
+        font3x5.print(F("Export to Serial\nLoad from Serial\nReturn to Menu"));
 
         arduboy.drawFastVLine(56, pgm_read_byte(&yPos_21[menu.image.firstIndex]), 5);
         break;

@@ -355,3 +355,96 @@ void printHex(uint8_t value) {
   Serial.print(value, HEX);
 
 }
+
+
+
+// -----------------------------------------------------------------------------
+//  Load from Serial ..
+
+void loadFromSerial() {
+
+  uint8_t width = parseInt();
+  uint8_t height = parseInt();
+  
+  uint16_t offset = 0;
+  uint8_t x = 0;
+  uint8_t y = 0;
+
+  imageVars.xDim = (width > 16 ? 16 : width);
+  imageVars.yDim = (height > 16 ? 16 : height);
+
+  while (Serial.available() && (offset < 32)) {
+    imageVars.image[imageVars.imageIdx][y][x] = parseInt();
+    x++;
+    if (x == width) {
+      x = 0;
+      y++;
+    }
+    offset++;
+  }
+
+  // Dump out results
+  if (offset > 0) {
+
+    Serial.print(F("Load finished\n\nWidth = "));
+    Serial.println(width);
+    Serial.print(F("\nHeight = "));
+    Serial.println(height);
+    Serial.print(F("]nPixel bytes read = "));
+    Serial.println(offset);
+
+  }
+  else {
+
+    Serial.println(F("Nothing loaded. Be sure to hit 'send' first and then 'load' on the Arduboy."));
+    
+  }
+    
+}
+
+uint8_t parseInt() {
+
+  uint8_t result = 0;
+  uint8_t base = 10;
+
+
+  // Skip until see a digit ..
+
+  while(true) {
+
+    const int next = Serial.peek();
+
+    if (next < 0) return result;
+
+    const char nextChar = static_cast<char>(next);
+
+    if ((nextChar >= '0' && nextChar <= '9'))
+      break;
+    else
+      Serial.read();  
+
+  }
+
+
+  // Read until a non-digit ..
+
+  while (true) {
+
+    const int next = Serial.read();
+    if (next < 0) return result;
+
+    const char nextChar = static_cast<char>(next);
+
+    if (nextChar >= '0' && nextChar <= '9')
+      result = result*base + (nextChar - '0');
+    else if (nextChar >= 'a' && nextChar <= 'f')
+      result = result*base + (nextChar - 'a' + 10);
+    else if (nextChar >= 'A' && nextChar <= 'F')
+      result = result*base + (nextChar - 'A' + 10);
+    else if (nextChar == 'x' || nextChar == 'X')
+      base = 16;
+    else
+      return result;
+  }
+
+}
