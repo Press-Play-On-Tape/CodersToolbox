@@ -247,10 +247,10 @@ void exportToSerial() {
               for (uint8_t x = 0; x < imageVars.xDim; x++) {
 
                 if (y < yMax - 1) {
-                  printHex(imageVars.image[imageVars.imageIdx][y][x]);
+                  printHex(imageVars.image[z][y][x]);
                 }
                 else {
-                  printHex(static_cast<uint8_t>(imageVars.image[imageVars.imageIdx][y][x] & yMax_Mask));
+                  printHex(static_cast<uint8_t>(imageVars.image[z][y][x] & yMax_Mask));
                 }
                 Serial.print(F(","));
 
