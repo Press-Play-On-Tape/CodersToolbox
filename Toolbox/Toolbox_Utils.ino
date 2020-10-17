@@ -14,12 +14,11 @@
 
 uint16_t getFreq(uint16_t x) {
 
-  for (uint16_t i = x; i >= 0; i--) {
-
+  uint16_t i = x;
+  do {
     Note note = musicVars.notes[i];
     if (note.freq != TONES_END) return note.freq;
-
-  }
+  } while (i-- != 0);
 
   return musicVars.notes[x].freq;
 
