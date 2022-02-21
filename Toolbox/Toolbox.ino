@@ -15,7 +15,7 @@ MusicVars musicVars;
 ImageVars imageVars;
 MenuVars menu;
 
-GameState gameState = GameState::SplashScreen;
+GameState gameState = GameState::SplashScreen_Init;
 
 
 /* -----------------------------------------------------------------------------------------------------------------------------
@@ -51,9 +51,12 @@ void loop() {
 
   switch (gameState) {
 
+    case GameState::SplashScreen_Init:
+      splashScreen_Init();
+      break;
+
     case GameState::SplashScreen:
-      splashScreen_Update();
-      splashScreen_Render();
+      splashScreen();
       break;
 
     case GameState::TitleScreen:

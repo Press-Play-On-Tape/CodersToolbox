@@ -11,6 +11,7 @@ struct Note {
 };
 
 enum GameState : uint8_t {
+  SplashScreen_Init,
   SplashScreen,
   TitleScreen,
   Composer,
