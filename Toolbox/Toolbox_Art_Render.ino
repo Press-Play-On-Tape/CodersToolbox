@@ -202,10 +202,10 @@ void artScreen_Render() {
         font3x5.print(F("A+      Toggle + move\n"));
         font3x5.print(F("B+      Image up\n"));
         font3x5.print(F("B+      Image down\n"));
-        SpritesB::drawSelfMasked(67, 19, Images::Arrows_UpDown, 0);
-        SpritesB::drawSelfMasked(66, 28, Images::Arrows_LeftRight, 0);
-        SpritesB::drawSelfMasked(67, 35, Images::Arrows_UpDown, 0);
-        SpritesB::drawSelfMasked(66, 44, Images::Arrows_LeftRight, 0);
+        Sprites::drawSelfMasked(67, 19, Images::Arrows_UpDown, 0);
+        Sprites::drawSelfMasked(66, 28, Images::Arrows_LeftRight, 0);
+        Sprites::drawSelfMasked(67, 35, Images::Arrows_UpDown, 0);
+        Sprites::drawSelfMasked(66, 44, Images::Arrows_LeftRight, 0);
         break;
 
     }
